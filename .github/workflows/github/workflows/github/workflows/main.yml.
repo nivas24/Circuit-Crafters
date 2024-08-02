@@ -1,0 +1,40 @@
+name: Report Automation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas
+
+    - name: Run report generation script
+      env:
+        SECTION_ONE_TOTAL_VEHICLES: 78
+        SECTION_ONE_TOTAL_VOR: 4
+        SECTION_ONE_STK: 1
+        SECTION_ONE_AWS: 3
+        SECTION_ONE_WIP: 0
+        SECTION_ONE_AWI: 6
+        SECTION_TWO_TOTAL_VEHICLES: 61
+        SECTION_TWO_TOTAL_VOR: 31
+        SECTION_TWO_STK: 3
+        SECTION_TWO_AWS: 9
+        SECTION_TWO_WIP: 1
+        SECTION_TWO_AWI: 0
+      run: python generate_report.py
